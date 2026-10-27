@@ -6,7 +6,6 @@ import NotificationBanner from './components/NotificationBanner.vue';
 import BeforeAfter from './components/BeforeAfter.vue';
 import ImageRemover from './components/ImageRemover.vue';
 import VideoRemover from './components/VideoRemover.vue';
-import SupportPopup from './components/SupportPopup.vue';
 
 const tab = ref('image'); // 'image' | 'video'
 </script>
@@ -173,17 +172,11 @@ const tab = ref('image'); // 'image' | 'video'
             class="w-10 h-10 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-xl flex items-center justify-center mb-3 text-xl"
             aria-hidden="true"
           >
-            <iconify-icon icon="ph:code-bold"></iconify-icon>
+            <iconify-icon icon="ph:lightning-fill"></iconify-icon>
           </div>
-          <h3 class="font-bold text-slate-900 dark:text-white mb-1 text-sm">Open Source</h3>
+          <h3 class="font-bold text-slate-900 dark:text-white mb-1 text-sm">Instant &amp; Local</h3>
           <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
-            Free forever. Inspect the code on
-            <a
-              href="https://github.com/dearabhin/gemini-watermark-remover"
-              class="text-brand-primary hover:underline"
-              rel="noopener noreferrer"
-              >GitHub</a
-            >.
+            No waiting queues, file uploads, or rate limits. Runs entirely in your browser.
           </p>
         </article>
       </div>
@@ -191,5 +184,4 @@ const tab = ref('image'); // 'image' | 'video'
   </main>
 
   <SiteFooter />
-  <SupportPopup />
 </template>

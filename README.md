@@ -68,8 +68,8 @@ gemini-watermark-remover/
 ├── postcss.config.js       # PostCSS plugins (Tailwind, Autoprefixer)
 ├── public/                 # Static assets copied directly to build
 │   ├── assets/             # bg_48.png, bg_96.png (reference alpha maps)
-│   ├── css/output.css      # Generated Tailwind CSS for static SEO pages
-│   └── *.html, blog/       # Static marketing, SEO, and legal pages
+│   ├── fonts/, favicons, robots.txt, sitemap.xml, llms.txt, site.webmanifest
+│   └── css/output.css      # Generated Tailwind CSS
 ├── src/
 │   ├── main.js             # Vue application bootstrap
 │   ├── App.vue             # Root component & tab switching (Image vs Video)
@@ -80,8 +80,7 @@ gemini-watermark-remover/
 │   │   ├── WatermarkTuner.vue  # Real-time fine-tuning controls (position, size, gain)
 │   │   ├── BeforeAfter.vue     # Interactive comparison slider
 │   │   ├── SiteHeader.vue      # Navigation header & theme switcher
-│   │   ├── SiteFooter.vue      # Footer links
-│   │   ├── SupportPopup.vue    # Support modal
+│   │   ├── SiteFooter.vue      # Minimal footer with legal disclaimer
 │   │   └── NotificationBanner.vue # Top alert/announcement banner
 │   └── engine/
 │       ├── blendModes.js       # Core Reverse Alpha Blending math
