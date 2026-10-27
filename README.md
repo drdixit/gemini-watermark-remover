@@ -1,5 +1,6 @@
-# Gemini Watermark Remover
+Initially this is a fork of this repo [![Gemini Watermark Remover](https://github.com/dearabhin/gemini-watermark-remover) but i have my own plans.
 
+# Gemini Watermark Remover
 [![Live Demo](https://img.shields.io/badge/demo-removewatermark.dev-success?style=flat-square&logo=cloudflare&logoColor=white)](https://removewatermark.dev)
 [![Stack](https://img.shields.io/badge/tech-Vue%20%7C%20Vite%20%7C%20Tailwind-3B82F6?style=flat-square)](https://github.com/dearabhin/gemini-watermark-remover)
 [![License](https://img.shields.io/badge/license-MIT-orange?style=flat-square)](LICENSE)
