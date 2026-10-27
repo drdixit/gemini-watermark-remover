@@ -10,3 +10,12 @@ public/css/output.css
 # Logs / misc
 *.log
 .DS_Store
+
+# Agent skills & tooling
+.agents/
+skills-lock.json
+
+# Local agent docs & config
+docs/
+AGENTS.md
+agents.md

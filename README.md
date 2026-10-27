@@ -1,19 +1,13 @@
-Initially this is a fork of this repo [Gemini Watermark Remover](https://github.com/dearabhin/gemini-watermark-remover) but i have my own plans.
-
 # Gemini Watermark Remover
-[![Live Demo](https://img.shields.io/badge/demo-removewatermark.dev-success?style=flat-square&logo=cloudflare&logoColor=white)](https://removewatermark.dev)
-[![Stack](https://img.shields.io/badge/tech-Vue%20%7C%20Vite%20%7C%20Tailwind-3B82F6?style=flat-square)](https://github.com/dearabhin/gemini-watermark-remover)
+
 [![License](https://img.shields.io/badge/license-MIT-orange?style=flat-square)](LICENSE)
-[![Support on Patreon](https://img.shields.io/badge/Patreon-support-FF424D?style=flat-square&logo=patreon&logoColor=white)](https://www.patreon.com/cw/AbhinKrishna/membership)
-[![Donate via UPI](https://img.shields.io/badge/UPI-donate-097939?style=flat-square&logo=googlepay&logoColor=white)](https://removewatermark.dev/donate/)
+[![Stack](https://img.shields.io/badge/tech-Vue%20%7C%20Vite%20%7C%20Tailwind-3B82F6?style=flat-square)](#-tech-stack)
 
-A high-performance, **100% client-side** tool for removing the visible Google Gemini ✦ AI sparkle watermark from both **images and videos**. Built with **Vue 3 + Vite + Tailwind CSS**, it uses a mathematically precise **Reverse Alpha Blending** algorithm to restore pixels with zero quality loss.
-
-**🔗 Live Website:** [removewatermark.dev](https://removewatermark.dev)
+A high-performance, **100% client-side** tool for removing visible Google Gemini ✦ AI sparkle watermarks from both **images and videos**. Built with **Vue 3, Vite, and Tailwind CSS**, it utilizes mathematically exact **Reverse Alpha Blending** to restore underlying pixels with zero quality loss.
 
 ---
 
-## ✨ Before &amp; After
+## ✨ Before & After
 
 <table>
   <tr>
@@ -26,125 +20,119 @@ A high-performance, **100% client-side** tool for removing the visible Google Ge
   </tr>
 </table>
 
-> The live site also shows this as an interactive drag-to-compare slider.
-
 ---
 
 ## 🚀 Features
 
-* **Images & Videos:** Remove the sparkle watermark from Gemini images *and* videos — all in the browser.
-* **100% Client-Side Processing:** No servers involved. Files are processed locally for maximum privacy.
-* **Lossless Image Restoration:** Uses exact mathematical inversion rather than AI inpainting, preserving original pixel quality.
-* **Audio-Preserving Video Cleaning:** Videos are processed frame-by-frame and re-encoded with their original audio intact (via `MediaRecorder` + Web Audio).
-* **Auto-Detection:** Automatically detects watermark size (48px or 96px) based on resolution.
-* **Mobile Responsive:** Fully optimized UI for desktop and mobile devices.
+* **Images & Videos:** Remove sparkle watermarks from Gemini images and videos entirely in the browser.
+* **100% Client-Side Processing:** No servers involved. Files are processed locally in browser memory for complete privacy.
+* **Lossless Image Restoration:** Uses exact mathematical inversion rather than generative AI inpainting, preserving original pixel quality.
+* **Audio-Preserving Video Cleaning:** Videos are processed frame-by-frame and re-encoded with original audio preserved.
+* **Auto-Detection:** Automatically calculates watermark dimensions (48px, 96px, or compact) based on media resolution.
+* **Mobile Responsive:** Fully responsive interface for desktop and mobile devices.
 
 ---
 
 ## 🧠 How It Works (The Algorithm)
 
-Gemini adds watermarks using a standard **Alpha Compositing** (blending) technique. This tool simply reverses that math.
+Google Gemini applies visible watermarks using standard **Alpha Compositing** (blending). This tool mathematically reverses that process.
 
 ### 1. The Watermark Formula
-When Gemini generates an image, it applies the watermark logo using this formula:
+When Gemini watermarks an image, it blends the logo using:
 
 $$Pixel_{final} = (\alpha \times Pixel_{logo}) + (1 - \alpha) \times Pixel_{original}$$
 
 Where:
 * `α` (Alpha): The transparency level of the watermark pixel (0.0 to 1.0).
-* `Pixel_logo`: The color of the watermark (Pure White / 255).
-* `Pixel_original`: The original color we want to recover.
+* `Pixel_logo`: The watermark color (Pure White / 255).
+* `Pixel_original`: The original pixel value to recover.
 
-### 2. The Solution (Reverse Engineering)
-Since we know the `Pixel_final` (from your uploaded image), the `Pixel_logo` (White), and the `α` map (extracted from reference images), we can solve for `Pixel_original`:
+### 2. The Analytical Solution
+Because the formula is linear and the logo color is known (White / 255), we solve for the original pixel value:
 
-$$Pixel_{original} = \frac{Pixel_{final} - (\alpha \times Pixel_{logo})}{1 - \alpha}$$
+$$Pixel_{original} = \frac{Pixel_{final} - (\alpha \times 255)}{1 - \alpha}$$
 
-### 3. Alpha Map Extraction
-The tool loads two reference "background" images (`bg_48.png` and `bg_96.png`) which contain the isolated watermark alpha values. It reads these values to construct a precise `Float32Array` map of transparency levels, allowing for pixel-perfect subtraction.
+### 3. Alpha Map Calibration
+Reference transparency maps (`bg_48.png` and `bg_96.png` in `public/assets/`) provide the isolated watermark alpha values. The engine reads these into a `Float32Array` matrix to perform exact per-pixel subtraction.
 
 ---
 
 ## 📂 Project Structure
 
-The homepage tool is a **Vue 3 + Vite** app. All SEO/content pages (about, blog, etc.)
-remain static HTML in `public/` and are copied verbatim into the build.
-
 ```text
 gemini-watermark-remover/
-├── index.html              # Vite entry — SEO <head> + Vue mount point
-├── vite.config.js
-├── tailwind.config.js
-├── postcss.config.js
+├── index.html              # Vite entry point and SEO head tags
+├── package.json            # Dependencies: Vue 3, Mediabunny, Tailwind, Vite
+├── vite.config.js          # Vite configuration with @vitejs/plugin-vue
+├── tailwind.config.js      # Tailwind CSS configuration
+├── postcss.config.js       # PostCSS plugins (Tailwind, Autoprefixer)
+├── public/                 # Static assets copied directly to build
+│   ├── assets/             # bg_48.png, bg_96.png (reference alpha maps)
+│   ├── css/output.css      # Generated Tailwind CSS for static SEO pages
+│   └── *.html, blog/       # Static marketing, SEO, and legal pages
 ├── src/
-│   ├── main.js             # Vue bootstrap
-│   ├── App.vue             # Layout + image/video tab switcher
-│   ├── style.css           # Tailwind directives + custom CSS
+│   ├── main.js             # Vue application bootstrap
+│   ├── App.vue             # Root component & tab switching (Image vs Video)
+│   ├── style.css           # Global Tailwind and app styling
 │   ├── components/
-│   │   ├── SiteHeader.vue / SiteFooter.vue / NotificationBanner.vue
-│   │   ├── BeforeAfter.vue     # Drag-to-compare showcase
-│   │   ├── ImageRemover.vue    # Image tool (uses original engine)
-│   │   ├── VideoRemover.vue    # NEW video tool
-│   │   └── SupportPopup.vue
+│   │   ├── ImageRemover.vue    # Image processing UI, drag-and-drop, JSZip export
+│   │   ├── VideoRemover.vue    # Video processing UI, timeline preview, WebCodecs pipeline
+│   │   ├── WatermarkTuner.vue  # Real-time fine-tuning controls (position, size, gain)
+│   │   ├── BeforeAfter.vue     # Interactive comparison slider
+│   │   ├── SiteHeader.vue      # Navigation header & theme switcher
+│   │   ├── SiteFooter.vue      # Footer links
+│   │   ├── SupportPopup.vue    # Support modal
+│   │   └── NotificationBanner.vue # Top alert/announcement banner
 │   └── engine/
-│       ├── alphaMap.js     # Transparency value calculation
-│       ├── blendModes.js   # Reverse Alpha Blending math
-│       ├── watermarkEngine.js  # Image engine (asset loading & processing)
-│       └── videoEngine.js  # NEW per-frame video engine (+ audio)
-└── public/                 # Copied as-is to /dist
-    ├── about.html, contact.html, terms.html, privacy-policy.html
-    ├── blog/ …
-    ├── assets/             # bg_48.png, bg_96.png, before.png, after.png, og-image.jpg
-    ├── fonts/, favicons, robots.txt, sitemap.xml, llms.txt, site.webmanifest
-    └── css/output.css      # Tailwind build for the static pages (generated)
+│       ├── blendModes.js       # Core Reverse Alpha Blending math
+│       ├── alphaMap.js         # Extraction of Float32Array alpha maps from reference PNGs
+│       ├── geometry.js         # Coordinate math for standard & compact watermark bounds
+│       ├── tuner.js            # Live parameter adjustments, ROI bounding, canvas cleaning
+│       ├── watermarkEngine.js  # Canvas 2D image watermark removal pipeline
+│       └── videoEngine.js      # WebCodecs frame-by-frame decoding, cleaning, and MP4 re-muxing
+└── docs/                   # Local architectural documentation and agent change logs
 ```
 
+---
 
 ## 🛠️ Tech Stack
 
 * **Vue 3** (Composition API, `<script setup>`)
-* **Vite** for dev/build
+* **Vite** for local development and optimized production bundling
 * **Tailwind CSS** (via PostCSS)
-* [Iconify](https://iconify.design/) for icons, JSZip (lazy-loaded) for bulk image download.
+* **MediaBunny** for client-side WebCodecs video processing
+* **JSZip** for bulk image download archives
+* **Iconify** for interface icons
+
+---
 
 ## ⚡ Running Locally
 
 ```bash
 npm install
 
-# Build the Tailwind CSS for the static SEO pages once (or `npm run watch:css`)
+# Build static page Tailwind CSS
 npm run build:css
 
-# Start the Vite dev server for the homepage tool
+# Start Vite dev server
 npm run dev
 ```
+
+---
 
 ## ⚠️ Disclaimer
 
 This tool is for **educational and personal use only**.
-* It only removes visible watermarks; it **does not** remove invisible SynthID watermarks embedded by Google.
-* Please respect Google's Terms of Service and Intellectual Property rights.
+* It removes visible watermarks only; it **does not** remove invisible SynthID watermarks embedded by Google.
+* Respect copyright laws and Google's Terms of Service.
 
-## 💖 Support This Project
+---
 
-This tool is free, open source, and has no ads or paywalls — and it will stay that way.
-If it saved you time, a small donation helps **renew the domain**, **build new free
-open-source tools**, and occasionally buys me a **tea or a meal** ☕
+## 🤝 Credits & Acknowledgements
 
-<p align="center">
-  <a href="https://www.patreon.com/cw/AbhinKrishna/membership">
-    <img src="https://img.shields.io/badge/Support%20on-Patreon-FF424D?style=for-the-badge&logo=patreon&logoColor=white" alt="Support on Patreon" />
-  </a>
-  &nbsp;
-  <a href="https://removewatermark.dev/donate/">
-    <img src="https://img.shields.io/badge/Donate%20via-UPI-097939?style=for-the-badge&logo=googlepay&logoColor=white" alt="Donate via UPI" />
-  </a>
-</p>
+This application builds upon the contributions and research of several open-source projects and developers:
 
-> UPI donations work with Indian bank accounts (INR). Supporting from outside India? Patreon has you covered.
-
-## 🤝 Credits
-
-* Developed by **Abhin Krishna**.
-* Image algorithm adapted from [GeminiWatermarkTool](https://github.com/allenk/GeminiWatermarkTool).
-* Video watermark-removal pipeline follows [GargantuaX/gemini-watermark-remover](https://github.com/GargantuaX/gemini-watermark-remover) (MIT) — a WebCodecs decode → per-frame removal → MP4 re-encode flow with audio passthrough, powered by the [mediabunny](https://github.com/Vanilagy/mediabunny) library.
+* **[Abhin Krishna](https://github.com/dearabhin/gemini-watermark-remover)**: Creator of the original [gemini-watermark-remover](https://github.com/dearabhin/gemini-watermark-remover) web application, UI design, and baseline codebase upon which this project was forked and evolved.
+* **[allenk / GeminiWatermarkTool](https://github.com/allenk/GeminiWatermarkTool)**: Pioneer of the mathematical Reverse Alpha Blending algorithm for inverting Gemini watermarks.
+* **[GargantuaX / gemini-watermark-remover](https://github.com/GargantuaX/gemini-watermark-remover)**: Video watermark removal pipeline leveraging in-browser WebCodecs.
+* **[Vanilagy / mediabunny](https://github.com/Vanilagy/mediabunny)**: WebCodecs demuxing, decoding, and encoding library powering the browser video engine.
